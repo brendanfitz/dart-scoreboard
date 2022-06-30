@@ -51,8 +51,10 @@ void ScoreboardLCD::processCommand(String cmd, String *statePtr) {
     String msg = messages[currentLine];
     if (msg == "Set P1 Score") {
       *statePtr = "p1";
+      (*lcd).blink();
     } else if (msg == "Set P2 Score") {
       *statePtr = "p2";
+      (*lcd).blink();
     } else if (msg == "New Game") {
       *statePtr = "newGame";
     }

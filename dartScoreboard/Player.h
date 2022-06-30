@@ -11,6 +11,8 @@ public:
 
     void initalizeDisplay();
 
+    void reset();
+
     void updateScore(int amount);
 
     int getScore();

@@ -10,20 +10,29 @@
 #define LCD_D6 6
 #define LCD_D7 7
 #define IRpin 13
-#define CLK 22
-#define DIO 24
-#define INPUT_CLK 26
-#define INPUT_DIO 28
+#define P1_CLK 22
+#define P1_DIO 24
+#define P1_INPUT_CLK 26
+#define P1_INPUT_DIO 28
+#define P2_CLK 30
+#define P2_DIO 32
+#define P2_INPUT_CLK 34
+#define P2_INPUT_DIO 36
 
 String cmd;
 
 LiquidCrystal myLCD(LCD_RS, LCD_EN, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
 ScoreboardLCD lcd(&myLCD);
 
-TM1637Display scoreDisplayP1(CLK, DIO);
-TM1637Display inputDisplayP1(INPUT_CLK, INPUT_DIO);
+TM1637Display scoreDisplayP1(P1_CLK, P1_DIO);
+TM1637Display inputDisplayP1(P1_INPUT_CLK, P1_INPUT_DIO);
+TM1637Display scoreDisplayP2(P2_CLK, P2_DIO);
+TM1637Display inputDisplayP2(P2_INPUT_CLK, P2_INPUT_DIO);
 
-Player player1(301, &scoreDisplayP1, &inputDisplayP1);
+int gameScore = 301;
+Player player1(gameScore, &scoreDisplayP1, &inputDisplayP1);
+Player player2(gameScore, &scoreDisplayP2, &inputDisplayP2);
+
 
 String state = "main";
 
@@ -34,6 +43,7 @@ void setup() {
    
   delay(1000);
   player1.initalizeDisplay();
+  player2.initalizeDisplay();
 }
 
 void loop() {
@@ -45,10 +55,20 @@ void loop() {
       lcd.processCommand(cmd, &state);
 
       if (state == "newGame") {
-        // TODO: reset function for p1 and p2
+        player1.reset();
+        player2.reset();
+        state = "main";
       }
     } else if (state == "p1") {
       player1.processCommand(cmd, &state);
+      if (state == "main") {
+        myLCD.noBlink();
+      }
+    } else if (state == "p2") {
+      player2.processCommand(cmd, &state);
+      if (state == "main") {
+        myLCD.noBlink();
+      }
     }
     Serial.print("Current State: ");
     Serial.println(state);

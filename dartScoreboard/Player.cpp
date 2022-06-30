@@ -40,6 +40,12 @@ void Player::calcInput(int num) {
   inputNum = inputNum * 10 + num;
 }
 
+void Player::reset() {
+  score = 301;
+  inputNum = 0;
+  initalizeDisplay();
+}
+
 int Player::getScore() {
   return score;
 }
