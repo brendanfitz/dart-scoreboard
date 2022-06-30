@@ -9,6 +9,8 @@ public:
     Player(int gameScore, TM1637Display *inputDisplayPtr,
            TM1637Display *scoreDisplayPtr);
 
+    void initalizeDisplay();
+
     void updateScore(int amount);
 
     int getScore();
@@ -20,6 +22,8 @@ public:
     int getInput();
     
     void calcInput(int num);
+
+    void processCommand(String cmd, String *statePtr);
     
     TM1637Display *scoreDisplay;
     TM1637Display *inputDisplay;

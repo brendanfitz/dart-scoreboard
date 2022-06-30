@@ -17,6 +17,17 @@ Player::Player(int gameScore, TM1637Display *inputDisplayPtr,
     inputNum = 0;
 }
 
+void Player::initalizeDisplay() {
+  Serial.println("Setting brightness");
+  (*inputDisplay).setBrightness(7);
+  (*scoreDisplay).setBrightness(7);
+
+  Serial.println("Displaying Score");
+  setDisplay("Score");
+  setDisplay("Input");
+  Serial.println("Setup Done");
+}
+
 void Player::updateScore(int amount) {
   if (amount > score) {
     return;
@@ -66,4 +77,25 @@ void Player::setDisplay(String displayName) {
     (*inputDisplay).clear();
     (*inputDisplay).showNumberDec(inputNum, false, l, pos);
   }
+}
+
+void Player::processCommand(String cmd, String *statePtr) {
+  if (cmd.charAt(0) == '0') {
+    calcInput(cmd.toInt());
+    Serial.print("Player Score: ");
+    Serial.println(getInput());
+    setDisplay("Input");
+  } else if (cmd == "*") {
+    setInput(0);
+    setDisplay("Input");
+  } else if (cmd == "ok") {
+    updateScore(getInput());
+    setDisplay("Score");
+    setInput(0);
+    setDisplay("Input");
+  } else if (cmd == "#") {
+    *statePtr = "main";
+    setInput(0);
+  }
+  return;
 }
