@@ -63,11 +63,23 @@ void loop() {
       player1.processCommand(cmd, &state);
       if (state == "main") {
         lcd.printMenu();
+      } else if (state == "Game Over") {
+        lcd.printGameOver(1);
       }
     } else if (state == "p2") {
       player2.processCommand(cmd, &state);
       if (state == "main") {
         lcd.printMenu();
+      } else if (state == "Game Over") {
+        lcd.printGameOver(2);
+      }
+    } else if (state == "Game Over") {
+      if (cmd == "ok") {
+        state = "main";
+        player1.reset();
+        player2.reset();
+        lcd.printMenu();
+        myLCD.setCursor(0, 0);
       }
     }
     Serial.print("Current State: ");

@@ -15,6 +15,8 @@ class ScoreboardLCD {
 
     void printPlayerMenu(int playerNum);
 
+    void printGameOver(int winnerNum);
+
     void processCommand(String cmd, String *statePtr);
 
     LiquidCrystal *lcd;

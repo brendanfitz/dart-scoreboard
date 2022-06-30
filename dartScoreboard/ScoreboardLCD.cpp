@@ -20,6 +20,14 @@ void ScoreboardLCD::printMenu() {
   (*lcd).setCursor(0, currentLine);
 }
 
+void ScoreboardLCD::printGameOver(int winnerNum) {
+  (*lcd).clear();
+  (*lcd).setCursor(0, 0);
+  (*lcd).print("** Game Over! **");
+  (*lcd).setCursor(0, 1);
+  (*lcd).print(String(" Player ") + winnerNum + String(" Wins!"));
+}
+
 void ScoreboardLCD::printPlayerMenu(int playerNum) {
   (*lcd).clear();
   (*lcd).setCursor(0, 0);

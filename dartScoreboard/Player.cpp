@@ -86,6 +86,9 @@ void Player::processCommand(String cmd, String *statePtr) {
     setDisplay("Score");
     setInput(0);
     setDisplay("Input");
+    if (score == 0) {
+      *statePtr = "Game Over";
+    }
   } else if (cmd == "#") {
     *statePtr = "main";
     setInput(0);
