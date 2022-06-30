@@ -59,27 +59,14 @@ int Player::getInput() {
 }
 
 void Player::setDisplay(String displayName) {
-  int l;
-  int num = (displayName == "Score") ? score : inputNum;
-  /* switch to using log10 */
-  if (num >= 10000 ) { return; } 
-  else if (num >= 1000) { l = 4; } 
-  else if (num >= 100) { l = 3; }
-  else if (num >= 10) { l = 2; }
-  else { l = 1; }
+  double num = (displayName == "Score") ? score : inputNum;
+  int l = int(log10(num)) + 1;
+  if (l >= 4) { return; } 
   int pos = l*-1 + 4;
-  // Serial.print("l: ");
-  // Serial.print(l);
-  // Serial.print(", pos: ");
-  // Serial.print(pos);
   if (displayName == "Score") {
-    // Serial.print(", score: ");
-    // Serial.println(score);
     (*scoreDisplay).clear();
     (*scoreDisplay).showNumberDec(score, false, l, pos);
   } else {
-    // Serial.print(", inputNum: ");
-    // Serial.println(inputNum);
     (*inputDisplay).clear();
     (*inputDisplay).showNumberDec(inputNum, false, l, pos);
   }
