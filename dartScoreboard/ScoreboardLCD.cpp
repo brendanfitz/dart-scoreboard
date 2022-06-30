@@ -7,14 +7,25 @@ ScoreboardLCD::ScoreboardLCD(LiquidCrystal *myLCD) {
 
 void ScoreboardLCD::initalize() {
   (*lcd).begin(16, 2);
+  printMenu();
+}
+
+void ScoreboardLCD::printMenu() {
   (*lcd).clear();
   for (int i=0; i < 2; i++) {
     (*lcd).setCursor(0, i);
-    String msg = "> " + messages[i];
+    String msg = (i == currentLine ? "> " : "  ") + messages[i];
     (*lcd).print(msg);
   }
-  (*lcd).cursor();
-  (*lcd).setCursor(0, 0  );
+  (*lcd).setCursor(0, currentLine);
+}
+
+void ScoreboardLCD::printPlayerMenu(int playerNum) {
+  (*lcd).clear();
+  (*lcd).setCursor(0, 0);
+  (*lcd).print(String("*Enter P") + playerNum + String(" Score*"));
+  (*lcd).setCursor(0, 1);
+  (*lcd).print("      # for menu");
 }
 
 void ScoreboardLCD::processCommand(String cmd, String *statePtr) {
@@ -30,7 +41,10 @@ void ScoreboardLCD::processCommand(String cmd, String *statePtr) {
       (*lcd).print(msg);
       (*lcd).setCursor(0, 0);
     } else if (currentLine == 1) {
+      (*lcd).setCursor(0, 0);
+      (*lcd).print(" ");
       (*lcd).setCursor(0, 1);
+      (*lcd).print(">");
     }
   } else if (cmd == "up") {
     if (currentLine == 0) {
@@ -38,11 +52,14 @@ void ScoreboardLCD::processCommand(String cmd, String *statePtr) {
     }
     currentLine -= 1;
     if (currentLine == 0) {
+      (*lcd).setCursor(0, 1);
+      (*lcd).print(" ");
       (*lcd).setCursor(0, 0);
+      (*lcd).print(">");
     } else if (currentLine == 1) {
       for (int i=0; i < 2; i++) {
         (*lcd).setCursor(0, i);
-        String msg = "> " + messages[i];
+        String msg = (i == 1 ? "> " : "  ") + messages[i];
         (*lcd).print(msg);
       }
       (*lcd).setCursor(0, 1);
@@ -51,10 +68,10 @@ void ScoreboardLCD::processCommand(String cmd, String *statePtr) {
     String msg = messages[currentLine];
     if (msg == "Set P1 Score") {
       *statePtr = "p1";
-      (*lcd).blink();
+      printPlayerMenu(1);
     } else if (msg == "Set P2 Score") {
       *statePtr = "p2";
-      (*lcd).blink();
+      printPlayerMenu(2);
     } else if (msg == "New Game") {
       *statePtr = "newGame";
     }

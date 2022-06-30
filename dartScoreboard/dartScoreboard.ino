@@ -62,12 +62,12 @@ void loop() {
     } else if (state == "p1") {
       player1.processCommand(cmd, &state);
       if (state == "main") {
-        myLCD.noBlink();
+        lcd.printMenu();
       }
     } else if (state == "p2") {
       player2.processCommand(cmd, &state);
       if (state == "main") {
-        myLCD.noBlink();
+        lcd.printMenu();
       }
     }
     Serial.print("Current State: ");

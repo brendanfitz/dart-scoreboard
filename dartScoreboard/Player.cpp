@@ -19,8 +19,8 @@ Player::Player(int gameScore, TM1637Display *inputDisplayPtr,
 
 void Player::initalizeDisplay() {
   Serial.println("Setting brightness");
-  (*inputDisplay).setBrightness(7);
-  (*scoreDisplay).setBrightness(7);
+  (*inputDisplay).setBrightness(2);
+  (*scoreDisplay).setBrightness(2);
 
   Serial.println("Displaying Score");
   setDisplay("Score");
