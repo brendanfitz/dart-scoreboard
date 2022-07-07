@@ -12,12 +12,19 @@ void ScoreboardLCD::initalize() {
 
 void ScoreboardLCD::printMenu() {
   (*lcd).clear();
-  for (int i=0; i < 2; i++) {
+  int numLines;
+  if ((currentLine == messageCount - 1) && (messageCount % 2 == 1)) {
+    numLines = 1;
+  } else {
+    numLines = 2;
+  }
+  int startLine = currentLine - (currentLine % 2);
+  for (int i=0; i < numLines; i++) {
     (*lcd).setCursor(0, i);
-    String msg = (i == currentLine ? "> " : "  ") + messages[i];
+    String msg = (startLine + i == currentLine ? "> " : "  ") + messages[startLine + i];
     (*lcd).print(msg);
   }
-  (*lcd).setCursor(0, currentLine);
+  (*lcd).setCursor(0, currentLine % 2);
 }
 
 void ScoreboardLCD::printGameOver(int winnerNum) {
@@ -38,16 +45,12 @@ void ScoreboardLCD::printPlayerMenu(int playerNum) {
 
 void ScoreboardLCD::processCommand(String cmd, String *statePtr) {
   if (cmd == "dn") {
-    if (currentLine == 2) {
+    if (currentLine == messageCount - 1)  {
       return;
     }
     currentLine += 1;
-    if (currentLine == 2) {
-      (*lcd).clear();
-      (*lcd).setCursor(0, 0);
-      String msg = "> " + messages[currentLine];
-      (*lcd).print(msg);
-      (*lcd).setCursor(0, 0);
+    if (currentLine % 2 == 0) {
+      printMenu();
     } else if (currentLine == 1) {
       (*lcd).setCursor(0, 0);
       (*lcd).print(" ");
@@ -59,18 +62,13 @@ void ScoreboardLCD::processCommand(String cmd, String *statePtr) {
       return;
     }
     currentLine -= 1;
-    if (currentLine == 0) {
-      (*lcd).setCursor(0, 1);
-      (*lcd).print(" ");
+    if (currentLine % 2 == 0) {
       (*lcd).setCursor(0, 0);
       (*lcd).print(">");
-    } else if (currentLine == 1) {
-      for (int i=0; i < 2; i++) {
-        (*lcd).setCursor(0, i);
-        String msg = (i == 1 ? "> " : "  ") + messages[i];
-        (*lcd).print(msg);
-      }
       (*lcd).setCursor(0, 1);
+      (*lcd).print(" ");
+    } else {
+      printMenu();
     }
   } else if (cmd == "ok") {
     String msg = messages[currentLine];

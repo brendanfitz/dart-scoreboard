@@ -10,14 +10,14 @@
 #define LCD_D6 6
 #define LCD_D7 7
 #define IRpin 13
-#define P1_CLK 22
-#define P1_DIO 24
-#define P1_INPUT_CLK 26
-#define P1_INPUT_DIO 28
-#define P2_CLK 30
-#define P2_DIO 32
-#define P2_INPUT_CLK 34
-#define P2_INPUT_DIO 36
+#define P2_CLK 22
+#define P2_DIO 24
+#define P2_INPUT_CLK 26
+#define P2_INPUT_DIO 28
+#define P1_CLK 30
+#define P1_DIO 32
+#define P1_INPUT_CLK 34
+#define P1_INPUT_DIO 36
 
 String cmd;
 
@@ -40,6 +40,8 @@ void setup() {
   Serial.begin(9600);
   IrReceiver.begin(IRpin, ENABLE_LED_FEEDBACK);
   lcd.initalize();
+  Serial.print("Message Count: ");
+  Serial.println(lcd.messageCount);
    
   delay(1000);
   player1.initalizeDisplay();

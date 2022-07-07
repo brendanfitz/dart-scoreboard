@@ -21,6 +21,8 @@ class ScoreboardLCD {
 
     LiquidCrystal *lcd;
 
+    int messageCount = sizeof(messages) / sizeof(messages[0]);
+
   private:
     String messages[3] = {"Set P1 Score", "Set P2 Score" , "New Game"};
     int currentLine;
